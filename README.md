@@ -1,13 +1,25 @@
-# Permissions
-Permissions mod for Project Zomboid
+# Commands
+Server commands mod library for Project Zomboid
 
-Unfortunately, there are too many permissions to list on this page.
-
-Please refer to [this file](https://github.com/beemerwt/Permissions/blob/master/media/lua/client/Permissions.lua) to see all "PermissiveActions."
-Each permissive action has a string (text surrounded with double-quotation marks (")) that determines the permission required to perform that action. For example,
+## For Developers
+If you wish to use this library in your mod, you can do so by adding it to your requirements inside your mod.info file and then creating commands like so:
 
 ```lua
-PermissiveAction(ISWorldObjectContextMenu, "emptyRainCollector", 2);
-```
+-- Example function handler for when someone types in "/tp x y"
+local function Teleport(sender, args)
+  if args.length < 2 then
+    return "Usage: teleport <x> <y>";
+  end
+
+  local x = args[1];
+  local y = args[2];
   
-This registers "emptyRainCollector" as a permission to empty a rain collector. If the player has this permission then they will be allowed to empty a rain collector.
+  sender:setX(x);
+  sender:setY(y);
+  sender:setZ(0);
+  
+  return "Teleported to " .. x .. ", " .. y .. ".";
+end
+
+Commands.Add("tp", Teleport);
+```
